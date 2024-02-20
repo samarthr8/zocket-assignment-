@@ -1,0 +1,16 @@
+apiVersion: eksctl.io/v1alpha5
+
+kind: ClusterConfig
+
+metadata:
+  name: Zocket-cluster
+  region: us-east-1
+  version: "1.23"
+
+nodeGroups:
+  - name: zocket-node-1
+    instanceType: t2.small
+    desiredCapacity: 1
+    volumeSize: 15
+  
+availabilityZones: ['us-east-1a', 'us-east-1b']

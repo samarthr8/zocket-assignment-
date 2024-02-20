@@ -14,7 +14,7 @@ spec:
         rollingUpdate:
            maxSurge: 0
            maxUnavailable: 100%    
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       name: redis
@@ -26,11 +26,11 @@ spec:
           image: samarthr8/zocket:redis
           resources:
             requests:
-              memory: "100Mi"
-              cpu: 0.1
+              memory: "20Mi"
+              cpu: "20m"
             limits:
-              memory: "200Mi"
-              cpu: 0.2
+              memory: "50Mi"
+              cpu: "50m"
 ---
 
 apiVersion: v1
@@ -51,3 +51,18 @@ spec:
     protocol: TCP
     port: 6379
     targetPort: 6379
+
+---
+
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: redis-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: redis
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 5
